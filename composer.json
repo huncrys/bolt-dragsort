@@ -3,7 +3,7 @@
     "description": "Extension to add drag and drop sorting to bolt overview pages.",
     "type": "bolt-extension",
     "require": {
-        "bolt/bolt": "^3.0.0"
+        "bolt/bolt": "^3.6"
     },
     "keywords": [],
     "license": "MIT",

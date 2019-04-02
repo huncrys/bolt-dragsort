@@ -46,11 +46,17 @@
             var startingOn = document.querySelector('[data-showing-from]').dataset.showingFrom*1;
             Array.prototype.forEach.call(document.querySelectorAll('.dashboardlisting tbody tr[id]'), function(el, i){
                 sorting[el.id] = startingOn + i;
-                el.querySelector('.fa-align-left + a, .fa-spinner + a').innerHTML = el.querySelector('.fa-align-left + a, .fa-spinner + a').innerHTML.split(': ')[0] + ': ' + (startingOn + i);
+                if (list) {
+                    el.querySelector('.fa-align-left + a, .fa-spinner + a').innerHTML = el.querySelector('.fa-align-left + a, .fa-spinner + a').innerHTML.split(': ')[0] + ': ' + (startingOn + i);
+                }
             });
+
+            var url = new URL(document.querySelector('[data-admin-path]').dataset.adminPath);
+            url.pathname += '/dragsort';
+
             ajax({
                 method: 'POST',
-                url: document.querySelector('[data-admin-path]').dataset.adminPath + '/dragsort',
+                url: url.toString(),
                 data: {sorting: JSON.stringify(sorting), contenttype: document.querySelector('[data-contenttype]').dataset.contenttype}
             }, function(response, err){
                 if(err){
