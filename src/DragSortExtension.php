@@ -2,6 +2,7 @@
 
 namespace Bolt\Extension\SahAssar\DragSort;
 
+use Bolt\Storage\EntityManager;
 use Silex\Application;
 use Bolt\Extension\SimpleExtension;
 use Bolt\Controller\Zone;
@@ -77,11 +78,11 @@ class DragSortExtension extends SimpleExtension
     {
         $sorting = json_decode($request->get('sorting'));
         $ct = $request->get('contenttype');
-        $repo = $app['storage']->getRepository($ct);
+        /** @var EntityManager $db */
+        $db = $app['storage'];
+        $repo = $db->getRepository($ct);
         foreach ($sorting as $key => $value) {
-            $record = $repo->find(str_replace('item_', '', $key));
-            $record->set('sortorder', $value);
-            $repo->save($record);
+            $db->getConnection()->update($repo->getTableName(), ['sortorder' => $value], ['id' => str_replace('item_', '', $key)]);
         }
         return '';
     }
